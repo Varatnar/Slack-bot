@@ -34,6 +34,7 @@ impl EventHandler for Handler {
 
 fn main() {
     // Configure the client with your Discord bot token in the environment.
+    // TODO: change it to load from specific uncomitted file
     let token = "nothing".to_owned();
 
     // Create a new instance of the Client, logging in as a bot. This will
