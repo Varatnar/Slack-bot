@@ -1,0 +1,7 @@
+[package]
+name = "discord_bot"
+version = "0.1.0"
+authors = ["Rybek"]
+
+[dependencies]
+serenity = "0.5.11"
