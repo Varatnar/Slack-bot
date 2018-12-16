@@ -42,7 +42,7 @@ fn main() {
         StandardFramework::new()
             .configure(|c| c.owners(owners).prefix("sg "))
             .command("ralfu", |c| c.cmd(commands::secret::ralfu::ralfu))
-            //    .command("multiply", |c| c.cmd(commands::math::multiply))
+            .command("amq", |c| c.cmd(commands::general::amq))
             .command("quit", |c| c.cmd(commands::owner::quit).owners_only(true)),
     );
     if let Err(why) = client.start() {
