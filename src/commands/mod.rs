@@ -9,6 +9,6 @@ use serenity::framework::standard::CreateGroup;
 
 pub fn init_general() -> CreateGroup {
     CreateGroup::default()
-        .command("amq", |c| c.cmd(amq))
+        .cmd("amq", Amq)
         .command("quit", |c| c.cmd(quit).owners_only(true))
 }
