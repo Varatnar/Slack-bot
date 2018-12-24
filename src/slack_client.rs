@@ -7,9 +7,6 @@ use serenity::{
     prelude::*,
 };
 
-use serenity::framework::standard::{Args, Command};
-
-use commands;
 use core::framework::SlackbotFramework;
 
 struct Handler;
@@ -19,27 +16,8 @@ impl EventHandler for Handler {
         println!("Connected as {}", ready.user.name);
     }
 
-    fn message(&self, ctx: Context, msg: Message) {
-        if msg.content == "%10keuro" {
-            match commands::secret::ralfu::tenk_euro.execute(
-                &mut ctx.clone(),
-                &mut msg.clone(),
-                Args::new("", &["".to_string()]),
-            ) {
-                Ok(()) => println!("Success"),
-                Err(_) => panic!("panicked at EventHandler message"),
-            }
-        }
-        if msg.content == "%mvp" {
-            match commands::secret::ralfu::mvp.execute(
-                &mut ctx.clone(),
-                &mut msg.clone(),
-                Args::new("", &["".to_string()]),
-            ) {
-                Ok(()) => println!("Success"),
-                Err(_) => panic!("panicked at EventHandler message"),
-            }
-        }
+    fn message(&self, _: Context, _: Message) {
+        // nothing
     }
 
     fn resume(&self, _: Context, _: ResumedEvent) {
@@ -72,6 +50,10 @@ impl SlackbotClient {
         SlackbotClient(client)
     }
 
-    pub fn start(&mut self) -> Result<(), SerenityError> { self.start_autosharded() }
-    pub fn start_autosharded(&mut self) -> Result<(), SerenityError> { self.0.start_autosharded() }
+    pub fn start(&mut self) -> Result<(), SerenityError> {
+        self.start_autosharded()
+    }
+    pub fn start_autosharded(&mut self) -> Result<(), SerenityError> {
+        self.0.start_autosharded()
+    }
 }

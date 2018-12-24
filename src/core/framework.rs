@@ -13,5 +13,6 @@ impl SlackbotFramework {
             .group("Common", |_| commands::init_general())
             // comment out the line below to make a copy of bot from repository run
             .group("Secret", |_| commands::secret::init_secret())
+            //TODO User-Defined group with embeds + image templates from database
     }
 }
