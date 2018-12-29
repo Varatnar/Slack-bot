@@ -5,3 +5,4 @@ authors = ["Rybek"]
 
 [dependencies]
 serenity = "0.5.11"
+kankyo = "~0.2"
