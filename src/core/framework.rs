@@ -9,7 +9,7 @@ pub struct SlackbotFramework;
 impl SlackbotFramework {
     pub fn new(owners: HashSet<UserId>) -> StandardFramework {
         StandardFramework::new()
-            .configure(|c| c.owners(owners).prefixes(vec!["sg"]))
+            .configure(|c| c.owners(owners).prefixes(vec!["sg"]).allow_whitespace(true))
             .group("Common", |_| commands::init_general())
             // comment out the line below to make a copy of bot from repository run
             .group("Secret", |_| commands::secret::init_secret())

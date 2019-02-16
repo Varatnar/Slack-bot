@@ -1,6 +1,3 @@
-#[macro_use]
-extern crate serenity;
-extern crate kankyo;
 
 mod commands;
 mod core;
