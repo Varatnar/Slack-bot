@@ -7,7 +7,7 @@ use serenity::{
     prelude::*,
 };
 
-use core::framework::SlackbotFramework;
+use crate::core::framework::SlackbotFramework;
 
 struct Handler;
 

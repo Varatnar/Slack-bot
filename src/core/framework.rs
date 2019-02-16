@@ -2,7 +2,7 @@ use serenity::framework::StandardFramework;
 use serenity::model::id::UserId;
 use std::collections::HashSet;
 
-use commands;
+use crate::commands;
 
 pub struct SlackbotFramework;
 
