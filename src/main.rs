@@ -1,6 +1,8 @@
-
+#[macro_use]
+extern crate diesel;
 mod commands;
 mod core;
+mod db;
 mod slack_client;
 
 use slack_client::SlackbotClient;
