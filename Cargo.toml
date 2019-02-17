@@ -8,3 +8,4 @@ edition = "2018"
 serenity = "0.5.11"
 diesel = { version = "1.4.1", features = ["sqlite", "r2d2"] }
 kankyo = "~0.2"
+lazy_static = "1.2.0"
