@@ -22,7 +22,10 @@ impl Command for Delete {
     fn options(&self) -> Arc<CommandOptions> {
         let default = CommandOptions::default();
         let options = CommandOptions {
+            min_args: Some(1),
+            max_args: Some(1),
             owners_only: true,
+            aliases: vec!["del"].into_iter().map(|e| e.to_string()).collect(),
             ..default
         };
         Arc::new(options)

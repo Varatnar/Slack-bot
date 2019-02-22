@@ -5,7 +5,7 @@ authors = ["Rybek"]
 edition = "2018"
 
 [dependencies]
-serenity = "0.5.11"
+serenity = "0.5.12"
 diesel = { version = "1.4.1", features = ["sqlite", "r2d2"] }
-kankyo = "~0.2"
+kankyo = "0.2.0"
 lazy_static = "1.2.0"

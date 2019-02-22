@@ -10,9 +10,9 @@ impl Command for New {
         if let (Ok(layer), Ok(name), description) = (
             args.single::<i32>(),
             args.single::<String>(),
-            args.single::<String>().ok(),
+            args.rest(),
         ) {
-            if let Ok(Some(1)) = db.new_item_group(layer, name.clone(), description)
+            if let Ok(Some(1)) = db.new_item_group(layer, name.clone(), Some(description.to_owned()))
             {
                 let _ = msg.reply(&format!("New item group {} added succesfully.", name));
             }
@@ -31,7 +31,9 @@ impl Command for New {
     fn options(&self) -> Arc<CommandOptions> {
         let default = CommandOptions::default();
         let options = CommandOptions {
+            min_args: Some(2),
             owners_only: true,
+            aliases: vec!["add", "create"].into_iter().map(|e| e.to_string()).collect(),
             ..default
         };
         Arc::new(options)
