@@ -1,7 +1,6 @@
 pub mod general;
 pub mod mascot;
 pub mod owner;
-pub mod secret;
 
 use self::general::*;
 use self::owner::*;
