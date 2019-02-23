@@ -7,12 +7,12 @@ pub struct New;
 
 impl Command for New {
     fn execute(&self, _: &mut Context, msg: &Message, mut args: Args) -> Result<(), CommandError> {
-        if let (Ok(layer), Ok(name), description) = (
-            args.single::<i32>(),
+        if let (Ok(name), Ok(layer), description) = (
             args.single::<String>(),
+            args.single::<i32>(),
             args.rest(),
         ) {
-            match db.new_item_group(layer, name.clone(), Some(description.to_owned()))
+            match db.new_item(name.clone(), Some(description.to_owned()), layer)
             {
                 Ok(_) => {
                     msg.reply(&format!("New item group {} added succesfully.", name))?;}

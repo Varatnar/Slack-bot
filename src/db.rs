@@ -24,40 +24,66 @@ impl Database {
     }
 
     pub fn connect(&self) -> PooledConnection<ConnectionManager<SqliteConnection>> {
-        self.pool
+        let conn = self
+            .pool
             .clone()
             .get()
-            .expect("Attempt to get connection timed out")
+            .expect("Attempt to get connection timed out");
+        conn.execute("PRAGMA foreign_keys = ON")
+            .expect("PRAGMA foreign_keys = ON failed");
+        conn
     }
-
+    //TODO: more generic interface for inserting/deleting/updating/listing? Perhaps someday
     pub fn new_item_group(
         &self,
         layer: i32,
         name: String,
         description: Option<String>,
-    ) -> QueryResult<Option<usize>> {
-        //  use crate::db::schema::item_groups::dsl::*;
+    ) -> QueryResult<usize> {
         let item_group = ItemGroup {
             layer,
             name,
             description,
         };
 
-        diesel::insert_or_ignore_into(item_groups::table)
+        diesel::insert_into(item_groups::table)
             .values(&item_group)
             .execute(self.connect().deref())
-            .optional()
     }
 
-    pub fn del_item_group(&self, name: String) -> QueryResult<usize>
-    {
+    pub fn del_item_group(&self, name: String) -> QueryResult<usize> {
         diesel::delete(item_groups::table)
             .filter(self::schema::item_groups::name.like(name))
             .execute(self.connect().deref())
     }
-    
-    pub fn list_item_groups(&self) -> QueryResult<Vec<ItemGroup>>
-    {
+
+    pub fn list_item_groups(&self) -> QueryResult<Vec<ItemGroup>> {
         self::schema::item_groups::table.load::<ItemGroup>(self.connect().deref())
+    }
+
+    pub fn new_item(
+        &self,
+        name: String,
+        description: Option<String>,
+        layer: i32,
+    ) -> QueryResult<usize> {
+        let item = NewItem {
+            name,
+            description,
+            layer,
+        };
+        diesel::insert_into(items::table)
+            .values(&item)
+            .execute(self.connect().deref())
+    }
+
+    pub fn del_item(&self, name: String) -> QueryResult<usize> {
+        diesel::delete(items::table)
+            .filter(self::schema::items::name.like(name))
+            .execute(self.connect().deref())
+    }
+
+    pub fn list_items(&self) -> QueryResult<Vec<Item>> {
+        self::schema::items::table.load::<Item>(self.connect().deref())
     }
 }

@@ -3,14 +3,14 @@ use serenity::framework::standard::{Args, Command, CommandError, CommandOptions}
 use serenity::model::channel::Message;
 use serenity::prelude::Context;
 use std::sync::Arc;
-// Delete command for ItemGroup
+// Delete command for Item
 pub struct Delete;
 
 impl Command for Delete {
     fn execute(&self, _: &mut Context, msg: &Message, mut args: Args) -> Result<(), CommandError> {
         if let Ok(name) = args.single::<String>()
          {
-            if let Ok(deleted) = db.del_item_group(name) {
+            if let Ok(deleted) = db.del_item(name) {
                 let _ = msg.reply(&format!("Deleted {} entries.", deleted));
             }
         } else {
