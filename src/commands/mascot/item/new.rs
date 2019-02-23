@@ -1,8 +1,13 @@
-use crate::core::global::DB as db;
+use std::sync::Arc;
+
 use serenity::framework::standard::{Args, Command, CommandError, CommandOptions};
 use serenity::model::channel::Message;
 use serenity::prelude::Context;
-use std::sync::Arc;
+
+use crate::core::global::DB as db;
+use crate::db::models::Item;
+use crate::db::models::NewItem;
+
 pub struct New;
 
 impl Command for New {
@@ -12,17 +17,17 @@ impl Command for New {
             args.single::<i32>(),
             args.rest(),
         ) {
-            match db.new_item(name.clone(), Some(description.to_owned()), layer)
-            {
-                Ok(_) => {
-                    msg.reply(&format!("New item group {} added succesfully.", name))?;}
-                Err(_) => {
-                    msg.reply(&format!("Failed to add item group {} to the database.", name))?;
+            match Item::insert(NewItem::with(name.clone(), Some(description.to_owned()), layer),
+                               &db.get_connection())
+                {
+                    Ok(_) => {
+                        msg.reply(&format!("New item group {} added succesfully.", name))?;
+                    }
+                    Err(_) => {
+                        msg.reply(&format!("Failed to add item group {} to the database.", name))?;
+                    }
                 }
-            }
-        }
-        else
-        {
+        } else {
             let _ = msg.reply("Invalid command syntax.");
         }
         Ok(())

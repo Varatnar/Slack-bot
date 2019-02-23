@@ -1,14 +1,18 @@
-use crate::core::global::DB as db;
+use std::sync::Arc;
+
 use serenity::framework::standard::{Args, Command, CommandError, CommandOptions};
 use serenity::model::channel::Message;
 use serenity::prelude::Context;
 use serenity::utils::MessageBuilder;
-use std::sync::Arc;
+
+use crate::core::global::DB as db;
+use crate::db::models::Item;
+
 pub struct List;
 
 impl Command for List {
     fn execute(&self, _: &mut Context, msg: &Message, _: Args) -> Result<(), CommandError> {
-        match db.list_items() {
+        match Item::all(&db.get_connection()) {
             Ok(results) => {
                 let mut message = MessageBuilder::new()
                     .push(format!("Displaying {} items\n", results.len()));
@@ -20,7 +24,6 @@ impl Command for List {
                     println!("Error sending message: {:?}", why);
                 }
             }
-
             Err(_) => {
                 let _ = msg.reply("Failed to retrieve result from the database.");
             }

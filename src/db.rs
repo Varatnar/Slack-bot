@@ -1,11 +1,14 @@
-pub mod models;
-pub mod schema;
-use self::models::*;
-use self::schema::*;
-use diesel::prelude::*;
-use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
 use std::env;
 use std::ops::Deref;
+
+use diesel::prelude::*;
+use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
+
+use self::models::*;
+use self::schema::*;
+
+pub mod models;
+pub mod schema;
 
 // Use initialize to make a new connection pool and aftewards use connect to get a pooled connection
 pub struct Database {
@@ -34,12 +37,10 @@ impl Database {
         conn
     }
     //TODO: more generic interface for inserting/deleting/updating/listing? Perhaps someday
-    pub fn new_item_group(
-        &self,
-        layer: i32,
-        name: String,
-        description: Option<String>,
-    ) -> QueryResult<usize> {
+    pub fn new_item_group(&self,
+                          layer: i32,
+                          name: String,
+                          description: Option<String>) -> QueryResult<usize> {
         let item_group = ItemGroup {
             layer,
             name,
@@ -61,29 +62,7 @@ impl Database {
         self::schema::item_groups::table.load::<ItemGroup>(self.connect().deref())
     }
 
-    pub fn new_item(
-        &self,
-        name: String,
-        description: Option<String>,
-        layer: i32,
-    ) -> QueryResult<usize> {
-        let item = NewItem {
-            name,
-            description,
-            layer,
-        };
-        diesel::insert_into(items::table)
-            .values(&item)
-            .execute(self.connect().deref())
-    }
-
-    pub fn del_item(&self, name: String) -> QueryResult<usize> {
-        diesel::delete(items::table)
-            .filter(self::schema::items::name.like(name))
-            .execute(self.connect().deref())
-    }
-
-    pub fn list_items(&self) -> QueryResult<Vec<Item>> {
-        self::schema::items::table.load::<Item>(self.connect().deref())
+    pub fn get_connection(&self) -> PooledConnection<ConnectionManager<SqliteConnection>> {
+        self.pool.get().unwrap()
     }
 }
