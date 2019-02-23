@@ -10,14 +10,13 @@ impl Command for List {
     fn execute(&self, _: &mut Context, msg: &Message, _: Args) -> Result<(), CommandError> {
         match db.list_item_groups() {
             Ok(results) => {
-                let mut message =
-                    MessageBuilder::new().push(format!("Displaying {} item groups\n", results.len()));
+                let mut message = MessageBuilder::new()
+                    .push(format!("Displaying {} item groups\n", results.len()));
                 for item_group in results {
-                     message = message.push(format!("{:?}\n", item_group));
+                    message = message.push(format!("{:?}\n", item_group));
                 }
                 let message = message.build();
-                if let Err(why) = msg.channel_id.send_message(|m| m.content(message))
-                {
+                if let Err(why) = msg.channel_id.send_message(|m| m.content(message)) {
                     println!("Error sending message: {:?}", why);
                 }
             }
