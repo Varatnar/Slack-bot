@@ -24,6 +24,7 @@ impl Database {
 
     pub fn get_connection(&self) -> PooledConnection<ConnectionManager<SqliteConnection>> {
         let conn = self.pool
+                       .clone()
                        .get()
                        .expect("Attempt to get connection timed out");
         conn.execute("PRAGMA foreign_keys = ON")
