@@ -22,7 +22,7 @@ impl Database {
         Database { pool }
     }
 
-    pub fn get_connection(&self) -> PooledConnection<ConnectionManager<SqliteConnection>> {
+    pub fn get_conn(&self) -> PooledConnection<ConnectionManager<SqliteConnection>> {
         let conn = self.pool
                        .clone()
                        .get()

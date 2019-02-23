@@ -21,7 +21,7 @@ fn main() {
 
 pub fn display_ig() {
     use crate::core::global::DB;
-    match ItemGroup::all(&DB.get_connection()) {
+    match ItemGroup::all(&DB.get_conn()) {
         Ok(results) => {
             println!("Displaying {} item groups", results.len());
             for item_group in results {

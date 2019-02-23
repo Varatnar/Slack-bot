@@ -17,7 +17,7 @@ impl Command for New {
             args.rest(),
         ) {
             match ItemGroup::insert(ItemGroup::with(layer, name.clone(), Some(description.to_owned())),
-                                    &db.get_connection())
+                                    &db.get_conn())
                 {
                     Ok(_) => {
                         msg.reply(&format!("New item group {} added succesfully.", name))?;

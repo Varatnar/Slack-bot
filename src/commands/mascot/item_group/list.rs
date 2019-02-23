@@ -12,7 +12,7 @@ pub struct List;
 
 impl Command for List {
     fn execute(&self, _: &mut Context, msg: &Message, _: Args) -> Result<(), CommandError> {
-        match ItemGroup::all(&db.get_connection()) {
+        match ItemGroup::all(&db.get_conn()) {
             Ok(results) => {
                 let mut message = MessageBuilder::new()
                     .push(format!("Displaying {} item groups\n", results.len()));

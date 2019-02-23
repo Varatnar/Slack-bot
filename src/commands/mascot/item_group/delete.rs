@@ -14,7 +14,7 @@ impl Command for Delete {
     fn execute(&self, _: &mut Context, msg: &Message, mut args: Args) -> Result<(), CommandError> {
         if let Ok(name) = args.single::<String>()
         {
-            if let Ok(deleted) = ItemGroup::delete_with_name(name, &db.get_connection()) {
+            if let Ok(deleted) = ItemGroup::delete_with_name(name, &db.get_conn()) {
                 let _ = msg.reply(&format!("Deleted {} entries.", deleted));
             }
         } else {
