@@ -1,11 +1,14 @@
 #[macro_use]
 extern crate diesel;
+
+use slack_client::SlackbotClient;
+
+use crate::db::models::ItemGroup;
+
 mod commands;
 mod core;
 mod db;
 mod slack_client;
-
-use slack_client::SlackbotClient;
 
 fn main() {
     kankyo::load().expect("Failed to load .env file");
@@ -18,7 +21,7 @@ fn main() {
 
 pub fn display_ig() {
     use crate::core::global::DB;
-    match DB.list_item_groups() {
+    match ItemGroup::all(&DB.get_connection()) {
         Ok(results) => {
             println!("Displaying {} item groups", results.len());
             for item_group in results {
